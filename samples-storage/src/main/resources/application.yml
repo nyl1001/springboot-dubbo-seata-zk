@@ -1,0 +1,60 @@
+server:
+  port: 8100
+#====================================stream =============================================
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3309/zk_seata_business_db?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: zk_seata_business_rw
+    password: 123456
+  application:
+    name: dubbo-storage-example
+
+#====================================Dubbo config===============================================
+dubbo:
+  application:
+    id: dubbo-storage-example
+    name: dubbo-storage-example
+    qosEnable: false
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20882
+  registry:
+    id: dubbo-storage-example-registry
+    address: zookeeper://127.0.0.1:2181
+  config-center:
+    address: zookeeper://127.0.0.1:2181
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181
+#====================================mybatis-plus config===============================================
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  typeAliasesPackage: io.seata.samples.integration.*.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+#====================================Seata Config===============================================
+seata:
+  enabled: true
+  application-id: storage-seata-example
+  tx-service-group: storage-service-seata-service-group # 事务群组（可以每个应用独立取名，也可以使用相同的名字）
+  registry:
+    type: zk
+    zk:
+      server-addr: 127.0.0.1:2181
+      connect-timeout: 2000
+      session-timeout: 6000
+      cluster: default
+  config:
+    type: zk
+    zk:
+      server-addr: 127.0.0.1:2181
+      connect-timeout: 2000
+      session-timeout: 6000
+  enable-auto-data-source-proxy: true
+  use-jdk-proxy: false
+  data-source-proxy-mode: AT
